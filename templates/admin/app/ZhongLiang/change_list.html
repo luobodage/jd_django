@@ -1,0 +1,178 @@
+{#{% extends 'admin/change_list.html' %}#}
+{#{% load static %}#}
+{#{% block content_title %}#}
+{#    <!-- ECharts单文件引入 -->#}
+{#    <script src="{% static 'js/echarts.min.js' %}"></script>#}
+{#    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>#}
+{#{% endblock %}#}
+{##}
+{#{% block result_list %}#}
+{##}
+{#    <div id="mains" style="height:400px; width: 1000px;"></div>#}
+{#    <h1>{{ data1|safe }}</h1>#}
+{#    <h1>{{ type|safe }}</h1>#}
+{#    <script>#}
+{#        var myChart = echarts.init(document.getElementById('mains'));#}
+{#        var data ={{ data1|safe }};#}
+{#        var time = {{ type|safe }};#}
+{#        console.log(time)#}
+{##}
+{#        myChart.setOption({#}
+{#            toolbox: {#}
+{#                show: true,#}
+{#                feature: {#}
+{#                    mark: {show: true},#}
+{#                    dataView: {show: true, readOnly: false},#}
+{#                    magicType: {show: true, type: ['line']},#}
+{#                    restore: {show: true},#}
+{#                    saveAsImage: {show: true}#}
+{#                }#}
+{#            },#}
+{#            calculable: true,#}
+{##}
+{#            title: {#}
+{#                text: '宠物狗年龄分布统计'#}
+{#            },#}
+{#            tooltip: {#}
+{#                trigger: 'axis',#}
+{#            },#}
+{#            legend: {#}
+{#                data: ['数量']#}
+{#            },#}
+{##}
+{#            xAxis: [#}
+{#                {#}
+{#                    type: 'category',#}
+{#                    data: time,#}
+{#                    axisLabel: {#}
+{#                        interval: 0,#}
+{#                        rotate: 0#}
+{#                    }#}
+{#                }#}
+{#            ],#}
+{#            yAxis: [#}
+{#                {#}
+{#                    type: 'value',#}
+{#                }#}
+{#            ],#}
+{##}
+{#            series: [#}
+{#                {#}
+{#                    name: '数量',#}
+{#                    type: 'scatter',#}
+{#                    data: data,#}
+{#                    markPoint: [#}
+{#                        {type: 'max', name: '最大值'},#}
+{#                        {type: 'min', name: '最小值'}#}
+{#                    ]#}
+{#                },#}
+{#            ]#}
+{#        });#}
+{##}
+{#    </script>#}
+{##}
+{#{% endblock %}#}
+
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <h1>{{ price|safe }}</h1>
+
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    var data = {{ age|safe }}
+    var data1 = {{ price|safe }}
+
+    var option;
+
+
+
+    var dateList = data.map(function (item) {
+        return item[0];
+    });
+    var valueList = data.map(function (item) {
+        return item[1];
+    });
+     var dateList1 = data1.map(function (item) {
+        return item[0];
+    });
+    var valueList1 = data1.map(function (item) {
+        return item[1];
+    });
+
+    option = {
+
+        // Make gradient line here
+        visualMap: [{
+            show: false,
+            type: 'continuous',
+            seriesIndex: 0,
+            min: 0,
+            max: 1500
+        }, {
+            show: false,
+            type: 'continuous',
+            seriesIndex: 1,
+            dimension: 0,
+            min: 0,
+            max: dateList.length - 1
+        }],
+        legend: {
+                data: ['重量/kg','价格/元'],
+
+            },
+
+        title: [{
+            left: 'center',
+
+        }, {
+            top: '55%',
+            left: 'center',
+            text: '京东家电重量与价格对比分布统计',
+
+        }],
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: [{
+            data: dateList
+        }, {
+            data: dateList1,
+            gridIndex: 1
+        }],
+        yAxis: [{}, {
+            gridIndex: 1
+        }],
+        grid: [{
+            bottom: '60%'
+        }, {
+            top: '60%'
+        }],
+        series: [{
+            name:'重量/kg',
+            type: 'line',
+            showSymbol: false,
+            data: valueList
+        }, {
+            name:'价格/元',
+            type: 'line',
+            showSymbol: false,
+            data: valueList1,
+            xAxisIndex: 1,
+            yAxisIndex: 1
+        }]
+    };
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+</script>
+</body>
+</html>
